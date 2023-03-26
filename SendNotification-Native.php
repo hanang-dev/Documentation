@@ -1,4 +1,4 @@
-function sendNotification($userId, $type, $title, $message, $payload)
+function sendNotification($userId, $title, $message, $payload)
 {
     try {
         $NewResult = new database();
@@ -20,22 +20,18 @@ function sendNotification($userId, $type, $title, $message, $payload)
                 //$apiKey = "AAAAzJ5s-zI:APA91bHt1xbLiBiIXbfK_6zE1bUR7yqqqAAuFvGaCg5EATiXuUMHUTA2DttesqWbVqbWTEzNdSVD2C-pADHfOoskZtHFoXzIp7bw6B2nP8zddueke4_6x8wZwr6j5nqMbK5-c5_5Vrjr";
                 $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
 
-                $notification = [
+               $notification = [
                     'title' => $title,
-                    'body' => $message,
-                    'click_action' => 'FLUTTER_NOTIFICATION_CLICK'
+                    'body' =>  $message,
+                    'icon' => 'logohome'
                 ];
 
-                $data = [
-                    'type' => $type,
-                    'payload' => $payload
-                ];
+                
 
                 $fcmNotification = [
-                    'registration_ids' => $tokens,
+                    "registration_ids"=> $tokens,
                     'notification' => $notification,
-                    'data' => $data,
-                    'ttl' => '604800s',
+                    'data' => $payload,
                     'priority' => 'high',
                 ];
 
@@ -44,7 +40,7 @@ function sendNotification($userId, $type, $title, $message, $payload)
                     'Content-Type: application/json'
                 ];
 
-                $ch = curl_init();
+                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $fcmUrl);
                 curl_setopt($ch, CURLOPT_POST, true);
                 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
